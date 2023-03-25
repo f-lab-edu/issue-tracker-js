@@ -10,7 +10,8 @@
     "start": "vite serve ./src --port 8080",
     "lint": "yarn dlx eslint --fix ./src --config .eslintrc.json",
     "prettier:write": "prettier --write ./src",
-    "prettier:check": "prettier --check ./src"
+    "prettier:check": "prettier --check ./src",
+    "test": "jest"
   },
   "devDependencies": {
     "eslint": "^8.36.0",
