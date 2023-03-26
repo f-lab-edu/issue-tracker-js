@@ -17,6 +17,9 @@ jobs:
         with:
           node-version: v18.14.0
 
+      - name: Install Dependencies
+        run: yarn install
+
       - name: Check ESLint
         run: yarn lint
 
