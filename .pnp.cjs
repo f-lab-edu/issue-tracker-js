@@ -38,7 +38,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["jest", "virtual:4c68e089185363b8f75ca827a7b010d9ed2ad9f9070c7816204f97f9204ff03ccd1313313c673fb1bd9364796b5a8dc72c49e01cd7f7c654c4e558c4f4ef274b#npm:29.5.0"],\
             ["lint-staged", "npm:13.2.0"],\
             ["lit", "npm:2.7.0"],\
-            ["msw", "virtual:4c68e089185363b8f75ca827a7b010d9ed2ad9f9070c7816204f97f9204ff03ccd1313313c673fb1bd9364796b5a8dc72c49e01cd7f7c654c4e558c4f4ef274b#npm:1.2.1"],\
+            ["msw", "virtual:4c68e089185363b8f75ca827a7b010d9ed2ad9f9070c7816204f97f9204ff03ccd1313313c673fb1bd9364796b5a8dc72c49e01cd7f7c654c4e558c4f4ef274b#npm:1.1.0"],\
             ["prettier", "npm:2.8.7"],\
             ["vite", "virtual:4c68e089185363b8f75ca827a7b010d9ed2ad9f9070c7816204f97f9204ff03ccd1313313c673fb1bd9364796b5a8dc72c49e01cd7f7c654c4e558c4f4ef274b#npm:4.2.1"]\
           ],\
@@ -4571,7 +4571,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["jest", "virtual:4c68e089185363b8f75ca827a7b010d9ed2ad9f9070c7816204f97f9204ff03ccd1313313c673fb1bd9364796b5a8dc72c49e01cd7f7c654c4e558c4f4ef274b#npm:29.5.0"],\
             ["lint-staged", "npm:13.2.0"],\
             ["lit", "npm:2.7.0"],\
-            ["msw", "virtual:4c68e089185363b8f75ca827a7b010d9ed2ad9f9070c7816204f97f9204ff03ccd1313313c673fb1bd9364796b5a8dc72c49e01cd7f7c654c4e558c4f4ef274b#npm:1.2.1"],\
+            ["msw", "virtual:4c68e089185363b8f75ca827a7b010d9ed2ad9f9070c7816204f97f9204ff03ccd1313313c673fb1bd9364796b5a8dc72c49e01cd7f7c654c4e558c4f4ef274b#npm:1.1.0"],\
             ["prettier", "npm:2.8.7"],\
             ["vite", "virtual:4c68e089185363b8f75ca827a7b010d9ed2ad9f9070c7816204f97f9204ff03ccd1313313c673fb1bd9364796b5a8dc72c49e01cd7f7c654c4e558c4f4ef274b#npm:4.2.1"]\
           ],\
@@ -5719,17 +5719,17 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["msw", [\
-        ["npm:1.2.1", {\
-          "packageLocation": "./.yarn/unplugged/msw-virtual-bf40d92785/node_modules/msw/",\
+        ["npm:1.1.0", {\
+          "packageLocation": "./.yarn/unplugged/msw-virtual-0b763962f5/node_modules/msw/",\
           "packageDependencies": [\
-            ["msw", "npm:1.2.1"]\
+            ["msw", "npm:1.1.0"]\
           ],\
           "linkType": "SOFT"\
         }],\
-        ["virtual:4c68e089185363b8f75ca827a7b010d9ed2ad9f9070c7816204f97f9204ff03ccd1313313c673fb1bd9364796b5a8dc72c49e01cd7f7c654c4e558c4f4ef274b#npm:1.2.1", {\
-          "packageLocation": "./.yarn/unplugged/msw-virtual-bf40d92785/node_modules/msw/",\
+        ["virtual:4c68e089185363b8f75ca827a7b010d9ed2ad9f9070c7816204f97f9204ff03ccd1313313c673fb1bd9364796b5a8dc72c49e01cd7f7c654c4e558c4f4ef274b#npm:1.1.0", {\
+          "packageLocation": "./.yarn/unplugged/msw-virtual-0b763962f5/node_modules/msw/",\
           "packageDependencies": [\
-            ["msw", "virtual:4c68e089185363b8f75ca827a7b010d9ed2ad9f9070c7816204f97f9204ff03ccd1313313c673fb1bd9364796b5a8dc72c49e01cd7f7c654c4e558c4f4ef274b#npm:1.2.1"],\
+            ["msw", "virtual:4c68e089185363b8f75ca827a7b010d9ed2ad9f9070c7816204f97f9204ff03ccd1313313c673fb1bd9364796b5a8dc72c49e01cd7f7c654c4e558c4f4ef274b#npm:1.1.0"],\
             ["@mswjs/cookies", "npm:0.2.2"],\
             ["@mswjs/interceptors", "npm:0.17.9"],\
             ["@open-draft/until", "npm:1.0.3"],\
@@ -5744,7 +5744,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["inquirer", "npm:8.2.5"],\
             ["is-node-process", "npm:1.2.0"],\
             ["js-levenshtein", "npm:1.1.6"],\
-            ["node-fetch", "virtual:bf40d9278562c3d8361361a7f941a62bacc3fe7c430466ba422e1fa4210a6c567aa12c83f9b6fda5c1ce2837fa8c494ffb0f6e2a4afacf03d362e960a411feca#npm:2.6.9"],\
+            ["node-fetch", "virtual:0b763962f500fa6c2479cc722efa3ae348223c9b866398a20916b0bd75b3f327c2eab5d307ea5c6b22ad7fafc3b818ebcfeef4a87c89d8454182c19c950a608b#npm:2.6.9"],\
             ["outvariant", "npm:1.4.0"],\
             ["path-to-regexp", "npm:6.2.1"],\
             ["strict-event-emitter", "npm:0.4.6"],\
@@ -5803,10 +5803,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],\
           "linkType": "SOFT"\
         }],\
-        ["virtual:bf40d9278562c3d8361361a7f941a62bacc3fe7c430466ba422e1fa4210a6c567aa12c83f9b6fda5c1ce2837fa8c494ffb0f6e2a4afacf03d362e960a411feca#npm:2.6.9", {\
-          "packageLocation": "./.yarn/__virtual__/node-fetch-virtual-2ef32c86b7/0/cache/node-fetch-npm-2.6.9-9fc9a54529-acb04f9ce7.zip/node_modules/node-fetch/",\
+        ["virtual:0b763962f500fa6c2479cc722efa3ae348223c9b866398a20916b0bd75b3f327c2eab5d307ea5c6b22ad7fafc3b818ebcfeef4a87c89d8454182c19c950a608b#npm:2.6.9", {\
+          "packageLocation": "./.yarn/__virtual__/node-fetch-virtual-f5f3c678a8/0/cache/node-fetch-npm-2.6.9-9fc9a54529-acb04f9ce7.zip/node_modules/node-fetch/",\
           "packageDependencies": [\
-            ["node-fetch", "virtual:bf40d9278562c3d8361361a7f941a62bacc3fe7c430466ba422e1fa4210a6c567aa12c83f9b6fda5c1ce2837fa8c494ffb0f6e2a4afacf03d362e960a411feca#npm:2.6.9"],\
+            ["node-fetch", "virtual:0b763962f500fa6c2479cc722efa3ae348223c9b866398a20916b0bd75b3f327c2eab5d307ea5c6b22ad7fafc3b818ebcfeef4a87c89d8454182c19c950a608b#npm:2.6.9"],\
             ["@types/encoding", null],\
             ["encoding", null],\
             ["whatwg-url", "npm:5.0.0"]\
