@@ -1,5 +1,5 @@
 import { html, LitElement } from 'lit';
-import { addBoardAction } from '../../lib/store/reducer';
+import { addBoardAction } from '../../lib/store/reducer/boardReducer';
 import CoreComponent from './CoreComponent';
 
 export class Header extends CoreComponent {

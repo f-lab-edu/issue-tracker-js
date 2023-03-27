@@ -1,6 +1,6 @@
-import reducer, { initialState } from './reducer';
+import boardReducer, { initialState } from './reducer/boardReducer';
 import Store from './config/store';
 
-const store = new Store(reducer, initialState);
+const store = new Store(boardReducer, initialState);
 
 export default store;
