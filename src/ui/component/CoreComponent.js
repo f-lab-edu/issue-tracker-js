@@ -6,10 +6,22 @@ class CoreComponent extends LitElement {
     super();
     this.store = store;
     this.props = {};
-    for (const attribute of attributes) {
+    this.attrs = attributes;
+
+    this.store.subscribe(() => {
+      this.updateState();
+      this.requestUpdate();
+    });
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+    for (const attribute of this.attrs) {
       this.props[attribute] = this.getAttribute(attribute);
     }
   }
+
+  updateState() {}
 }
 
 export default CoreComponent;

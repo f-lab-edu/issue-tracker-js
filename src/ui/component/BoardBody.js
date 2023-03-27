@@ -5,17 +5,15 @@ export class BoardBody extends CoreComponent {
   constructor() {
     super();
     this.boards = this.store.getState().boards;
-    console.log('this.boards >>', this.boards);
+  }
+
+  updateState() {
+    this.boards = this.store.getState().boards;
   }
 
   render() {
     const boardsHTML = this.boards?.map((board) => {
-      return html`
-        <ul>
-          <li>${board.id}</li>
-          <li>${board.title}</li>
-        </ul>
-      `;
+      return html` <board-item id="${board.id}" title="${board.title}"></board-item> `;
     });
     return html` <section style="display: flex">${boardsHTML}</section> `;
   }
