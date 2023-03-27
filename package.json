@@ -2,6 +2,7 @@
   "name": "issue-tracker-js",
   "version": "1.0.0",
   "main": "index.js",
+  "type": "module",
   "repository": "https://github.com/f-lab-edu/issue-tracker-js",
   "author": "bytrustu <bytrustu@gmail.com>",
   "license": "MIT",
