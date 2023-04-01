@@ -9,24 +9,37 @@ function initializeDragAndDrop($container) {
   $container.addEventListener('dragend', handleDragEnd, true);
 }
 
+function closest(el, selector) {
+  while (el) {
+    if (el.matches(selector)) {
+      return el;
+    }
+    el = el.parentElement;
+  }
+  return null;
+}
+
+function getClosestDraggableNode(el) {
+  return closest(el, '[draggable="true"], .last');
+}
+
 function handleDragStart(e) {
-  const $target = e.target.closest('.board-list__item');
+  const $target = getClosestDraggableNode(e.target);
   if (!$target) {
     return;
   }
 
   $dragNode = $target;
-  $target.style.opacity = '0.5';
+  $dragNode.style.opacity = '0.5';
 }
 
 function handleDragOver(e) {
   e.preventDefault();
-  e.target.style.cursor = 'move';
 }
 
 function handleDragEnter(e) {
   e.preventDefault();
-  const $enterNode = e.target.closest('.board-list__item');
+  const $enterNode = getClosestDraggableNode(e.target);
   if ($enterNode && $dragNode !== $enterNode) {
     $enterNode.parentNode.insertBefore($dragNode, $enterNode);
   }

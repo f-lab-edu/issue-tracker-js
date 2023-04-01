@@ -109,12 +109,12 @@ class BoardList extends CoreComponent {
           .fill(0)
           .map(
             (_, index) => html`
-              <li class="board-list__item" draggable="true" data-type="element">
+              <li class="board-list__item" draggable="true">
                 <figure class="board-list__icon">
                   <img src="https://i.imgur.com/ZiLeFCC.png" alt="todo" />
                 </figure>
                 <article class="board-list__content">
-                  <h3 class="board-list__content-title">12312321</h3>
+                  <h3 class="board-list__content-title">제목입니다.</h3>
                   <ul class="board-list__content-items">
                     <li>${index}</li>
                   </ul>
