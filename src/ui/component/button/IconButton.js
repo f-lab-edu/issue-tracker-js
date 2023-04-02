@@ -1,14 +1,14 @@
 import { css, html, LitElement } from 'lit';
 import CoreComponent from '../CoreComponent';
 
-const IconSrc = {
-  add: 'https://cdn-icons-png.flaticon.com/512/1828/1828579.png',
-  close: 'https://cdn-icons-png.flaticon.com/512/2997/2997911.png',
+const iconSources = {
+  addIcon: 'https://cdn-icons-png.flaticon.com/512/1828/1828579.png',
+  closeIcon: 'https://cdn-icons-png.flaticon.com/512/2997/2997911.png',
 };
 
 class IconButton extends CoreComponent {
   constructor() {
-    super(['type', 'alt']);
+    super(['icon', 'alt']);
   }
 
   static get styles() {
@@ -29,17 +29,18 @@ class IconButton extends CoreComponent {
         height: auto;
       }
 
-      .add img {
+      .addIcon img {
         width: 12px;
       }
     `;
   }
 
   render() {
-    const { type, alt } = this.props;
+    const { icon, alt } = this.props;
+    console.log('icon', icon);
     return html`
-      <button class="icon-button ${type}" @click="${this._onClick}">
-        <img src="${IconSrc[type]}" alt="${alt}" />
+      <button class="icon-button ${icon}" @click="${this._onClick}">
+        <img src="${iconSources[icon]}" alt="${alt}" />
       </button>
     `;
   }

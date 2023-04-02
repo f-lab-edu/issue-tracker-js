@@ -122,8 +122,8 @@ class BoardContainer extends CoreComponent {
             <span class="board-container__count">10</span>
           </h2>
           <nav class="board-container__action">
-            <icon-button type="add" alt="add" @icon-button-click="${this.handleButtonClick}"></icon-button>
-            <icon-button type="close" alt="close" @icon-button-click="${this.handleButtonClick}"></icon-button>
+            <icon-button icon="addIcon" alt="add" @icon-button-click="${this.handleButtonClick}"></icon-button>
+            <icon-button icon="closeIcon" alt="close" @icon-button-click="${this.handleButtonClick}"></icon-button>
           </nav>
         </header>
         <div class="board-container__input-container">

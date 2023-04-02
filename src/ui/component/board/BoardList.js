@@ -124,7 +124,7 @@ class BoardList extends CoreComponent {
                   </footer>
                 </article>
                 <aside class="board-list__item-footer">
-                  <icon-button type="add" alt="close" @icon-button-click="${this.handleButtonClick}"></icon-button>
+                  <icon-button icon="addIcon" alt="close" @icon-button-click="${this.handleButtonClick}"></icon-button>
                 </aside>
               </li>
             `,
