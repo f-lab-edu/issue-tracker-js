@@ -16,20 +16,21 @@ const mockServer = ({ method, path, statusCode, responseCallback }) =>
 export const mockGetBoards = () =>
   mockServer({
     method: 'GET',
-    path: '/api/board',
+    path: '/api/boards',
     statusCode: 200,
     responseCallback: () => mockData.getBoards(),
   });
 
-export const mockPostBoards = () =>
+export const mockPostBoard = () =>
   mockServer({
     method: 'POST',
     path: '/api/board',
     statusCode: 200,
     responseCallback: ({ data }) => {
-      mockData.addBoard(data);
-      return mockData.getBoards();
+      const { id, title } = data;
+      mockData.addBoardById({ id, title });
+      return mockData.getBoardLastItemById(id);
     },
   });
 
-export default [mockGetBoards, mockPostBoards];
+export default [mockGetBoards, mockPostBoard];
