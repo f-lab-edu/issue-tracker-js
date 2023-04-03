@@ -1,0 +1,11 @@
+:root {
+  --border-radius: 6px;
+  --border-color: #ddd;
+  --font-size-default: 14px;
+  --font-weight-medium: 500;
+  --font-weight-bold: 600;
+  --color-primary: #ee8548;
+  --color-secondary: #4e8ef1;
+  --color-text: #666;
+  --color-text-light: #888;
+}
