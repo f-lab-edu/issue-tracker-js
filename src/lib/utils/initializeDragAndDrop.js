@@ -46,12 +46,10 @@ function handleDragEnter(e) {
 }
 function handleDragLeave(e) {
   e.preventDefault();
-  console.log('handle leave', e.target);
 }
 
 function handleDrop(e) {
   e.preventDefault();
-  // search delete $dragNode
 
   console.log('element', getClosestDraggableNode(e.target));
   console.log('parent element', closest(e.target, '[data-type="parent"]'));

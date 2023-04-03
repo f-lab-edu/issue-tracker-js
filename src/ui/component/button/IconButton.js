@@ -37,7 +37,6 @@ class IconButton extends CoreComponent {
 
   render() {
     const { icon, alt } = this.props;
-    console.log('icon', icon);
     return html`
       <button class="icon-button ${icon}" @click="${this._onClick}">
         <img src="${iconSources[icon]}" alt="${alt}" />
@@ -46,12 +45,7 @@ class IconButton extends CoreComponent {
   }
 
   _onClick(e) {
-    const { src, alt } = this.props;
-    this.dispatchEvent(
-      new CustomEvent('icon-button-click', {
-        detail: { src, alt },
-      }),
-    );
+    this.dispatchEvent(new CustomEvent('icon-button-click'));
   }
 }
 
