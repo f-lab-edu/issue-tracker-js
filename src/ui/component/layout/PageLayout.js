@@ -1,7 +1,12 @@
 import { css, html } from 'lit';
 import CoreComponent from '../CoreComponent';
+import store from '../../../lib/store/index';
 
 class PageLayout extends CoreComponent {
+  constructor() {
+    super(['boards']);
+  }
+
   static get styles() {
     return css`
       .page-layout {
@@ -20,14 +25,12 @@ class PageLayout extends CoreComponent {
   }
 
   render() {
+    const { boards } = store.getState();
+    console.log('init board', boards);
     return html`
       <div class="page-layout">
         <page-header></page-header>
-        <main class="page-layout__main">
-          ${Array(3)
-            .fill(0)
-            .map((_, index) => html`<board-container id="${index}"></board-container>`)}
-        </main>
+        <main class="page-layout__main">${boards.map((board) => html` <board-container board="${JSON.stringify(board)}"></board-container>`)}</main>
         <footer class="page-layout__footer"></footer>
       </div>
     `;

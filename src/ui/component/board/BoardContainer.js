@@ -1,9 +1,12 @@
 import { css, html } from 'lit';
 import CoreComponent from '../CoreComponent';
+import store from '../../../lib/store';
+import { addBoardItemAction, closeBoardTextareaAction, openBoardTextareaAction } from '../../../lib/store/reducer/boardReducer';
+import { apiPostBoard } from '../../../lib/api/board';
 
 class BoardContainer extends CoreComponent {
   constructor() {
-    super(['id']);
+    super(['board']);
   }
 
   static get styles() {
@@ -108,32 +111,61 @@ class BoardContainer extends CoreComponent {
     `;
   }
 
-  handleButtonClick(e) {
-    console.log('clicked');
+  static get properties() {
+    return {
+      board: { type: String },
+    };
+  }
+
+  handleTextareaOpen(id) {
+    store.dispatch(openBoardTextareaAction(id));
+  }
+
+  handleTextareaClose(id) {
+    store.dispatch(closeBoardTextareaAction(id));
+  }
+
+  handleBoardClose() {
+    console.log('close');
+  }
+
+  async handleBoardItemAdd(id) {
+    const $textarea = this.shadowRoot.querySelector('.board-container__input-text');
+    const title = $textarea.value;
+
+    const item = await apiPostBoard({ id, title });
+    store.dispatch(addBoardItemAction({ id, item }));
+
+    $textarea.value = '';
+    $textarea.focus();
   }
 
   render() {
-    const { id } = this.props;
+    const board = JSON.parse(this.props.board);
     return html`
       <section class="board-container">
         <header class="board-container__header">
           <h2 class="board-container__title">
-            <span class="board-container__title-text">할일</span>
-            <span class="board-container__count">10</span>
+            <span class="board-container__title-text">${board.title}</span>
+            <span class="board-container__count">${board.items.length}</span>
           </h2>
           <nav class="board-container__action">
-            <icon-button icon="addIcon" alt="add" @icon-button-click="${this.handleButtonClick}"></icon-button>
-            <icon-button icon="closeIcon" alt="close" @icon-button-click="${this.handleButtonClick}"></icon-button>
+            <icon-button icon="addIcon" alt="add" @icon-button-click="${() => this.handleTextareaOpen(board.id)}"></icon-button>
+            <icon-button icon="closeIcon" alt="close" @icon-button-click="${this.handleBoardClose}"></icon-button>
           </nav>
         </header>
-        <div class="board-container__input-container">
-          <textarea class="board-container__input-text" maxlength="500" placeholder="Enter a note"></textarea>
-          <div class="board-container__button-group">
-            <button class="board-container__button board-container__button-add">추가</button>
-            <button class="board-container__button board-container__button-cancel">취소</button>
-          </div>
-        </div>
-        <board-list id="${id}"></board-list>
+        ${board.isTextareaOpen
+          ? html`
+              <div class="board-container__input-container">
+                <textarea class="board-container__input-text" maxlength="500" placeholder="Enter a note"></textarea>
+                <div class="board-container__button-group">
+                  <button class="board-container__button board-container__button-add" @click="${() => this.handleBoardItemAdd(board.id)}">추가</button>
+                  <button class="board-container__button board-container__button-cancel" @click="${() => this.handleTextareaClose(board.id)}">취소</button>
+                </div>
+              </div>
+            `
+          : null}
+        <board-list id="${board.id}" items="${JSON.stringify(board.items)}"></board-list>
       </section>
     `;
   }

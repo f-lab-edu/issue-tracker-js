@@ -5,7 +5,14 @@ import initializeDragAndDrop from '../../../lib/utils/initializeDragAndDrop';
 
 class BoardList extends CoreComponent {
   constructor() {
-    super(['id']);
+    super(['id', 'items']);
+  }
+
+  static get properties() {
+    return {
+      id: { type: String },
+      items: { type: String },
+    };
   }
 
   static get styles() {
@@ -103,32 +110,36 @@ class BoardList extends CoreComponent {
 
   render() {
     const { id } = this.props;
+    const items = JSON.parse(this.props.items);
+
     return html`
       <ul class="board-list__body" data-id="${id}" data-type="parent">
-        ${Array(5)
-          .fill(0)
-          .map(
-            (_, index) => html`
-              <li class="board-list__item" draggable="true">
-                <figure class="board-list__icon">
-                  <img src="https://i.imgur.com/ZiLeFCC.png" alt="todo" />
-                </figure>
-                <article class="board-list__content">
-                  <h3 class="board-list__content-title">제목입니다.</h3>
-                  <ul class="board-list__content-items">
-                    <li>${index}</li>
-                  </ul>
-                  <footer class="board-list__author">
-                    <span>Added by</span>
-                    <strong>bytrustu</strong>
-                  </footer>
-                </article>
-                <aside class="board-list__item-footer">
-                  <icon-button icon="addIcon" alt="close" @icon-button-click="${this.handleButtonClick}"></icon-button>
-                </aside>
-              </li>
-            `,
-          )}
+        ${items.map(
+          (item, index) => html`
+            <li class="board-list__item" draggable="true" data-id="${item.id}">
+              <figure class="board-list__icon">
+                <img src="https://i.imgur.com/ZiLeFCC.png" alt="todo" />
+              </figure>
+              <article class="board-list__content">
+                <h3 class="board-list__content-title">${item.title}</h3>
+                ${item.content.length > 0
+                  ? html`
+                      <ul class="board-list__content-items">
+                        ${item.content.map((content) => html`<li>${content}</li>`)}
+                      </ul>
+                    `
+                  : undefined}
+                <footer class="board-list__author">
+                  <span>Added by</span>
+                  <strong>${item.author}</strong>
+                </footer>
+              </article>
+              <aside class="board-list__item-footer">
+                <icon-button icon="addIcon" alt="close" @icon-button-click="${this.handleButtonClick}"></icon-button>
+              </aside>
+            </li>
+          `,
+        )}
         <li class="board-list__item last"></li>
       </ul>
     `;
