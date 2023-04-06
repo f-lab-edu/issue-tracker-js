@@ -1,7 +1,7 @@
-export const getUniqueId = (length) => {
-  const uniqueId = new Date().getTime().toString(36) + Math.random().toString(36).slice(2);
-  if (length) {
-    return uniqueId.slice(uniqueId.length - length, uniqueId.length);
-  }
-  return uniqueId;
+export const uuidv4 = () => {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+    const r = (Math.random() * 16) | 0;
+    const v = c === 'x' ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  });
 };

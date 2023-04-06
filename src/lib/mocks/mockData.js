@@ -1,17 +1,17 @@
-import { getUniqueId } from '../utils/string';
+import { uuidv4 } from '../utils/string';
 
 const getTemplateBoardColumn = (title = '') => ({
-  id: getUniqueId(),
+  id: uuidv4(),
   title,
   isTextareaOpen: false,
   items: [
-    { id: getUniqueId(), title: `제목 ${getUniqueId(4)}`, content: [`컨텐츠 ${getUniqueId(4)}`], author: 'bytrustu' },
-    { id: getUniqueId(), title: `제목 ${getUniqueId(4)}`, content: [`컨텐츠 ${getUniqueId(4)}`], author: 'bytrustu' },
+    { id: uuidv4(), title: `제목 ${uuidv4(4)}`, content: [`컨텐츠 ${uuidv4(4)}`], author: 'bytrustu' },
+    { id: uuidv4(), title: `제목 ${uuidv4(4)}`, content: [`컨텐츠 ${uuidv4(4)}`], author: 'bytrustu' },
   ],
 });
 
 const getTemplateBoardItem = (title = '') => ({
-  id: getUniqueId(),
+  id: uuidv4(),
   title,
   content: [],
   author: 'bytrustu',
