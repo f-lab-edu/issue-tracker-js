@@ -1,12 +1,11 @@
-import request, { handleErrorResponse } from './config';
+import request from './config';
 
 export const apiGetBoardList = async () => {
   try {
     const response = await request.get('/boards');
     return response.data;
   } catch (error) {
-    handleErrorResponse(error);
-    throw error;
+    return [];
   }
 };
 
@@ -15,7 +14,6 @@ export const apiPostBoard = async ({ id, title }) => {
     const response = await request.post('/board', { id, title });
     return response.data;
   } catch (error) {
-    handleErrorResponse(error);
-    throw error;
+    return {};
   }
 };

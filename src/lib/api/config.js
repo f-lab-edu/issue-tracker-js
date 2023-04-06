@@ -19,23 +19,30 @@ request.interceptors.response.use(
     return response;
   },
   (error) => {
-    return Promise.reject(new CustomError(error.message));
+    const customError = handleErrorResponse(error);
+    return Promise.reject(customError);
   },
 );
 
 export class CustomError extends Error {
-  constructor(message) {
+  constructor(name, message, originError) {
     super(message);
-    this.name = 'CustomError';
+    this.name = name || 'CustomError';
+    this.originError = originError;
   }
 }
 
 export const handleErrorResponse = (error) => {
+  const errorMessage = error?.message || 'Unknown error';
+  const customError = new CustomError(null, errorMessage, error);
+
   if (error instanceof CustomError) {
-    console.log('CustomError: ', error.name, error.message);
-    return;
+    console.log('CustomError:', customError.name, customError.message);
+  } else {
+    console.log('Error:', customError.originError?.name, customError.message);
   }
-  console.log('Error: ', error?.message);
+
+  return customError;
 };
 
 export default request;
