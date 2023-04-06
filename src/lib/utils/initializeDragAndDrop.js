@@ -50,8 +50,9 @@ function handleDragLeave(e) {
 
 function handleDrop(e) {
   e.preventDefault();
-  console.log('element', e.target);
-  console.log('parent element', e.target.parentNode);
+
+  console.log('element', getClosestDraggableNode(e.target));
+  console.log('parent element', closest(e.target, '[data-type="parent"]'));
 }
 
 function handleDragEnd(e) {

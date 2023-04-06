@@ -21,6 +21,15 @@ class CoreComponent extends LitElement {
     }
   }
 
+  shouldUpdate(_changedProperties) {
+    for (const attribute of this.attrs) {
+      if (_changedProperties.has(attribute)) {
+        this.props[attribute] = this.getAttribute(attribute);
+      }
+    }
+    return super.shouldUpdate(_changedProperties);
+  }
+
   updateState() {}
 }
 
