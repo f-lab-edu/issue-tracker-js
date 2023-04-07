@@ -1,12 +1,13 @@
 import { uuidv4 } from '../utils/string';
+import { insertBoardItem, removeBoardItem } from '../utils/board';
 
 const getTemplateBoardColumn = (title = '') => ({
   id: uuidv4(),
   title,
   isTextareaOpen: false,
   items: [
-    { id: uuidv4(), title: `제목 ${uuidv4(4)}`, content: [`컨텐츠 ${uuidv4(4)}`], author: 'bytrustu' },
-    { id: uuidv4(), title: `제목 ${uuidv4(4)}`, content: [`컨텐츠 ${uuidv4(4)}`], author: 'bytrustu' },
+    { id: uuidv4(), title: `제목 ${title} - 0`, content: [], author: 'bytrustu' },
+    { id: uuidv4(), title: `제목 ${title} - 1`, content: [], author: 'bytrustu' },
   ],
 });
 
@@ -41,6 +42,12 @@ class MockData {
       const board = getTemplateBoardItem(title);
       this.boards[boardIndex].items.push(board);
     }
+  }
+
+  moveBoardItem({ nodeId, parentId, targetIndex }) {
+    const findBoardItem = [...this.boards.map((board) => board.items).flat()].find((item) => item.id === nodeId);
+    const boardsWithoutItem = removeBoardItem(this.boards, nodeId);
+    this.boards = insertBoardItem(boardsWithoutItem, parentId, findBoardItem, targetIndex);
   }
 }
 

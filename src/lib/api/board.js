@@ -17,3 +17,12 @@ export const apiPostBoard = async ({ id, title }) => {
     return {};
   }
 };
+
+export const apiPutMoveBoard = async ({ nodeId, parentId, targetIndex }) => {
+  try {
+    const response = await request.put('/board/move', { nodeId, parentId, targetIndex });
+    return response.data;
+  } catch (error) {
+    return {};
+  }
+};

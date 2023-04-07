@@ -33,4 +33,16 @@ export const mockPostBoard = () =>
     },
   });
 
-export default [mockGetBoards, mockPostBoard];
+export const mockPutMoveBoard = () =>
+  mockServer({
+    method: 'PUT',
+    path: '/api/board/move',
+    statusCode: 200,
+    responseCallback: ({ data }) => {
+      const { nodeId, parentId, targetIndex } = data;
+      mockData.moveBoardItem({ nodeId, parentId, targetIndex });
+      return mockData.getBoards();
+    },
+  });
+
+export default [mockGetBoards, mockPostBoard, mockPutMoveBoard];
