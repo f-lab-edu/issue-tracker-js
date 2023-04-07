@@ -49,6 +49,10 @@ class MockData {
     const boardsWithoutItem = removeBoardItem(this.boards, nodeId);
     this.boards = insertBoardItem(boardsWithoutItem, parentId, findBoardItem, targetIndex);
   }
+
+  removeBoardColumnById(id) {
+    this.boards = this.boards.filter((data) => data.id !== id);
+  }
 }
 
 const mockData = new MockData();

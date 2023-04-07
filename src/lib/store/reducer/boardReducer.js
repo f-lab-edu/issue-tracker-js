@@ -4,6 +4,7 @@ export const SET_INITIAL_BOARD_ACTION = 'BOARD/SET_INITIAL';
 export const ADD_BOARD_COLUMN_ACTION = 'BOARD/ADD_COLUMN';
 export const ADD_BOARD_ITEM_ACTION = 'BOARD/ADD_ITEM';
 export const MOVE_BOARD_ITEM_ACTION = 'BOARD/MOVE_ITEM';
+export const REMOVE_BOARD_COLUMN_ACTION = 'BOARD/REMOVE_COLUMN';
 export const OPEN_BOARD_TEXTAREA_ACTION = 'BOARD/OPEN_TEXTAREA';
 export const CLOSE_BOARD_TEXTAREA_ACTION = 'BOARD/CLOSE_TEXTAREA';
 
@@ -23,6 +24,11 @@ export const addBoardItemAction = (payload) => ({
 
 export const moveBoardItemAction = (payload) => ({
   type: MOVE_BOARD_ITEM_ACTION,
+  payload,
+});
+
+export const removeBoardColumnAction = (payload) => ({
+  type: REMOVE_BOARD_COLUMN_ACTION,
   payload,
 });
 
@@ -69,6 +75,11 @@ const boardReducer = (state, action) => {
         boards: insertBoardItem(boardsWithoutItem, action.payload.parentId, findBoardItem, action.payload.targetIndex),
       };
     }
+    case REMOVE_BOARD_COLUMN_ACTION:
+      return {
+        ...state,
+        boards: state.boards.filter((board) => board.id !== action.payload),
+      };
     case OPEN_BOARD_TEXTAREA_ACTION:
       return {
         ...state,

@@ -45,4 +45,15 @@ export const mockPutMoveBoard = () =>
     },
   });
 
-export default [mockGetBoards, mockPostBoard, mockPutMoveBoard];
+export const mockDeleteBoardColumn = () =>
+  mockServer({
+    method: 'DELETE',
+    path: '/api/boards/:id',
+    statusCode: 200,
+    responseCallback: ({ params }) => {
+      const { id } = params;
+      mockData.removeBoardColumnById(id);
+    },
+  });
+
+export default [mockGetBoards, mockPostBoard, mockPutMoveBoard, mockDeleteBoardColumn];
