@@ -158,7 +158,6 @@ class BoardContainer extends CoreComponent {
 
   render() {
     const board = JSON.parse(this.props.board);
-    console.log('delete', board);
     return html`
       <section class="board-container">
         <header class="board-container__header">

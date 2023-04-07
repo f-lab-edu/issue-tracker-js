@@ -12,28 +12,6 @@ class BoardList extends HTMLElement {
     this.props.initReder = false;
   }
 
-  static get observedAttributes() {
-    return ['id', 'items'];
-  }
-
-  attributeChangedCallback(name, oldValue, newValue) {
-    this.props[name] = newValue;
-  }
-
-  connectedCallback() {
-    this.render();
-    store.subscribe(() => {
-      forceNextTaskQueue(() => {
-        const storeBoard = store.getState().boards.find((board) => board.id === this.props.id);
-        if (!storeBoard) {
-          return;
-        }
-        this.props.items = storeBoard.items;
-        this.render();
-      });
-    });
-  }
-
   get styles() {
     return `
       <style>
@@ -124,12 +102,34 @@ class BoardList extends HTMLElement {
     `;
   }
 
+  static get observedAttributes() {
+    return ['id', 'items'];
+  }
+
+  attributeChangedCallback(name, oldValue, newValue) {
+    this.props[name] = name === 'items' ? JSON.parse(newValue) : newValue;
+  }
+
+  connectedCallback() {
+    this.render();
+    store.subscribe(() => {
+      forceNextTaskQueue(() => {
+        const storeBoard = store.getState().boards.find((board) => board.id === this.props.id);
+        if (!storeBoard) {
+          return;
+        }
+        this.props.items = storeBoard.items;
+        this.render();
+      });
+    });
+  }
+
   async moveBoardItemWithAPI(moveElementInfo) {
     try {
       await apiPutMoveBoard(moveElementInfo);
       store.dispatch(moveBoardItemAction(moveElementInfo));
     } catch (e) {
-      console.error(e);
+      console.error('moveBoardItemWithAPI error:', e);
     }
   }
 
@@ -146,9 +146,9 @@ class BoardList extends HTMLElement {
   createHTML({ id, items }) {
     return `
       <ul class="board-list__body" data-id="${id}" data-type="parent">
-        ${items
-          .map(
-            (item) => `
+        ${items.reduce(
+          (htmlString, item) =>
+            `${htmlString}
               <li class="board-list__item" draggable="true" data-id="${item.id}" key="${item.id}">
                 <figure class="board-list__icon">
                   <img src="https://i.imgur.com/ZiLeFCC.png" alt="todo" />
@@ -165,18 +165,15 @@ class BoardList extends HTMLElement {
                 </aside>
               </li>
             `,
-          )
-          .join('')}
+          '',
+        )}
         <li class="board-list__item last"></li>
       </ul>
     `;
   }
 
   render() {
-    const { id } = this.props;
-    const items = typeof this.props.items === 'string' ? JSON.parse(this.props.items) : this.props.items;
-
-    console.log('>>>>> end', id, items);
+    const { id, items } = this.props;
 
     this.initEvent();
 

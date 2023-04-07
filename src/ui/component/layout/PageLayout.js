@@ -7,10 +7,6 @@ class PageLayout extends CoreComponent {
     super(['boards']);
   }
 
-  static properties = {
-    boards: { type: Array },
-  };
-
   static get styles() {
     return css`
       .page-layout {
@@ -27,6 +23,10 @@ class PageLayout extends CoreComponent {
       }
     `;
   }
+
+  static properties = {
+    boards: { type: Array },
+  };
 
   connectedCallback() {
     super.connectedCallback();
