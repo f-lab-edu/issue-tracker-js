@@ -1,26 +1,12 @@
+import { getClosestDraggableNode, getMoveToElementInfo } from './dom';
+
 let $dragNode = null;
 
-function initializeDragAndDrop($container) {
-  $container.addEventListener('dragstart', handleDragStart, true);
-  $container.addEventListener('dragover', handleDragOver, true);
-  $container.addEventListener('dragenter', handleDragEnter, true);
-  $container.addEventListener('dragleave', handleDragLeave, true);
-  $container.addEventListener('drop', handleDrop, true);
-  $container.addEventListener('dragend', handleDragEnd, true);
-}
-
-function closest(el, selector) {
-  while (el) {
-    if (el.matches(selector)) {
-      return el;
-    }
-    el = el.parentElement;
-  }
-  return null;
-}
-
-function getClosestDraggableNode(el) {
-  return closest(el, '[draggable="true"], .last');
+function initializeDragAndDrop($element, callback) {
+  $element.addEventListener('dragstart', handleDragStart, true);
+  $element.addEventListener('dragover', handleDragOver, true);
+  $element.addEventListener('dragenter', handleDragEnter, true);
+  $element.addEventListener('dragend', handleDragEnd.bind(null, callback), true);
 }
 
 function handleDragStart(e) {
@@ -28,7 +14,6 @@ function handleDragStart(e) {
   if (!$target) {
     return;
   }
-
   $dragNode = $target;
   $dragNode.style.opacity = '0.5';
 }
@@ -44,19 +29,11 @@ function handleDragEnter(e) {
     $enterNode.parentNode.insertBefore($dragNode, $enterNode);
   }
 }
-function handleDragLeave(e) {
-  e.preventDefault();
-}
 
-function handleDrop(e) {
-  e.preventDefault();
-
-  console.log('element', getClosestDraggableNode(e.target));
-  console.log('parent element', closest(e.target, '[data-type="parent"]'));
-}
-
-function handleDragEnd(e) {
+function handleDragEnd(callback, e) {
   e.target.style.opacity = '1';
+  const moveElementInfo = getMoveToElementInfo($dragNode);
+  callback(moveElementInfo);
 }
 
 export default initializeDragAndDrop;
