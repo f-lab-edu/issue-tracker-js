@@ -7,6 +7,10 @@ class PageLayout extends CoreComponent {
     super(['boards']);
   }
 
+  static properties = {
+    boards: { type: Array },
+  };
+
   static get styles() {
     return css`
       .page-layout {
@@ -24,9 +28,16 @@ class PageLayout extends CoreComponent {
     `;
   }
 
+  connectedCallback() {
+    super.connectedCallback();
+    store.subscribe(() => {
+      this.boards = store.getState().boards;
+      this.requestUpdate();
+    });
+  }
+
   render() {
     const { boards } = store.getState();
-    console.log('init board', boards);
     return html`
       <div class="page-layout">
         <page-header></page-header>

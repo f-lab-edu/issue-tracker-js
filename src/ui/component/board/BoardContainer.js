@@ -1,8 +1,8 @@
 import { css, html } from 'lit';
 import CoreComponent from '../CoreComponent';
 import store from '../../../lib/store';
-import { addBoardItemAction, closeBoardTextareaAction, openBoardTextareaAction } from '../../../lib/store/reducer/boardReducer';
-import { apiPostBoard } from '../../../lib/api/board';
+import { addBoardItemAction, closeBoardTextareaAction, openBoardTextareaAction, removeBoardColumnAction } from '../../../lib/store/reducer/boardReducer';
+import { apiDeleteBoardColumn, apiPostBoard } from '../../../lib/api/board';
 
 class BoardContainer extends CoreComponent {
   constructor() {
@@ -111,10 +111,13 @@ class BoardContainer extends CoreComponent {
     `;
   }
 
-  static get properties() {
-    return {
-      board: { type: String },
-    };
+  static properties = {
+    board: { type: String },
+  };
+
+  shouldUpdate(_changedProperties) {
+    super.shouldUpdate(_changedProperties);
+    return true;
   }
 
   handleTextareaOpen(id) {
@@ -125,23 +128,37 @@ class BoardContainer extends CoreComponent {
     store.dispatch(closeBoardTextareaAction(id));
   }
 
-  handleBoardClose() {
-    console.log('close');
+  async handleRemoveBoardColumn(id) {
+    const isRemoveBoardColumn = confirm('정말 삭제하시겠습니까?');
+    if (isRemoveBoardColumn) {
+      try {
+        await apiDeleteBoardColumn(id);
+        store.dispatch(removeBoardColumnAction(id));
+        this.requestUpdate();
+      } catch (e) {
+        console.error('handleRemoveBoardColumn error: ', e);
+      }
+    }
   }
 
   async handleBoardItemAdd(id) {
     const $textarea = this.shadowRoot.querySelector('.board-container__input-text');
     const title = $textarea.value;
 
-    const item = await apiPostBoard({ id, title });
-    store.dispatch(addBoardItemAction({ id, item }));
+    try {
+      const item = await apiPostBoard({ id, title });
+      store.dispatch(addBoardItemAction({ id, item }));
 
-    $textarea.value = '';
-    $textarea.focus();
+      $textarea.value = '';
+      $textarea.focus();
+    } catch (e) {
+      console.error('handleBoardItemAdd error: ', e);
+    }
   }
 
   render() {
     const board = JSON.parse(this.props.board);
+    console.log('delete', board);
     return html`
       <section class="board-container">
         <header class="board-container__header">
@@ -151,7 +168,7 @@ class BoardContainer extends CoreComponent {
           </h2>
           <nav class="board-container__action">
             <icon-button icon="addIcon" alt="add" @icon-button-click="${() => this.handleTextareaOpen(board.id)}"></icon-button>
-            <icon-button icon="closeIcon" alt="close" @icon-button-click="${this.handleBoardClose}"></icon-button>
+            <icon-button icon="closeIcon" alt="close" @icon-button-click="${() => this.handleRemoveBoardColumn(board.id)}"></icon-button>
           </nav>
         </header>
         ${board.isTextareaOpen

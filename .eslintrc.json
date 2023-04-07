@@ -18,6 +18,8 @@
     "class-methods-use-this": "off",
     "no-unused-vars": "off",
     "no-underscore-dangle": "off",
-    "no-bitwise": "off"
+    "no-bitwise": "off",
+    "no-useless-catch": "off",
+    "no-restricted-globals": "off"
   }
 }

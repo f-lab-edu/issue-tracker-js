@@ -1,22 +1,42 @@
-import { css, html } from 'lit';
-
-import CoreComponent from '../CoreComponent';
 import initializeDragAndDrop from '../../../lib/utils/initializeDragAndDrop';
+import store from '../../../lib/store';
+import { moveBoardItemAction } from '../../../lib/store/reducer/boardReducer';
+import { apiPutMoveBoard } from '../../../lib/api/board';
+import { forceNextTaskQueue } from '../../../lib/utils/timer';
 
-class BoardList extends CoreComponent {
+class BoardList extends HTMLElement {
   constructor() {
-    super(['id', 'items']);
+    super();
+    this.props = {};
+    this.attachShadow({ mode: 'open' });
+    this.props.initReder = false;
   }
 
-  static get properties() {
-    return {
-      id: { type: String },
-      items: { type: String },
-    };
+  static get observedAttributes() {
+    return ['id', 'items'];
   }
 
-  static get styles() {
-    return css`
+  attributeChangedCallback(name, oldValue, newValue) {
+    this.props[name] = newValue;
+  }
+
+  connectedCallback() {
+    this.render();
+    store.subscribe(() => {
+      forceNextTaskQueue(() => {
+        const storeBoard = store.getState().boards.find((board) => board.id === this.props.id);
+        if (!storeBoard) {
+          return;
+        }
+        this.props.items = storeBoard.items;
+        this.render();
+      });
+    });
+  }
+
+  get styles() {
+    return `
+      <style>
       .board-list__body {
         padding: 0;
         margin: 0;
@@ -100,48 +120,69 @@ class BoardList extends CoreComponent {
         background-color: rgba(128, 128, 128, 0.5);
         border: 2px dashed #000;
       }
+      </style>
     `;
   }
 
-  updated(changedProperties) {
-    const $list = this.shadowRoot.querySelector('.board-list__body');
-    initializeDragAndDrop($list);
+  async moveBoardItemWithAPI(moveElementInfo) {
+    try {
+      await apiPutMoveBoard(moveElementInfo);
+      store.dispatch(moveBoardItemAction(moveElementInfo));
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  initEvent() {
+    forceNextTaskQueue(() => {
+      const $list = this.shadowRoot.querySelector('.board-list__body');
+      if ($list) {
+        initializeDragAndDrop($list, this.moveBoardItemWithAPI);
+        this.props.initReder = true;
+      }
+    });
+  }
+
+  createHTML({ id, items }) {
+    return `
+      <ul class="board-list__body" data-id="${id}" data-type="parent">
+        ${items
+          .map(
+            (item) => `
+              <li class="board-list__item" draggable="true" data-id="${item.id}" key="${item.id}">
+                <figure class="board-list__icon">
+                  <img src="https://i.imgur.com/ZiLeFCC.png" alt="todo" />
+                </figure>
+                <article class="board-list__content">
+                  <h3 class="board-list__content-title">${item.title}</h3>
+                  <footer class="board-list__author">
+                    <span>Added by</span>
+                    <strong>${item.author}</strong>
+                  </footer>
+                </article>
+                <aside class="board-list__item-footer">
+                  <icon-button icon="addIcon" alt="close" @icon-button-click="${this.handleButtonClick}"></icon-button>
+                </aside>
+              </li>
+            `,
+          )
+          .join('')}
+        <li class="board-list__item last"></li>
+      </ul>
+    `;
   }
 
   render() {
     const { id } = this.props;
-    const items = JSON.parse(this.props.items);
+    const items = typeof this.props.items === 'string' ? JSON.parse(this.props.items) : this.props.items;
 
-    return html`
-      <ul class="board-list__body" data-id="${id}" data-type="parent">
-        ${items.map(
-          (item, index) => html`
-            <li class="board-list__item" draggable="true" data-id="${item.id}">
-              <figure class="board-list__icon">
-                <img src="https://i.imgur.com/ZiLeFCC.png" alt="todo" />
-              </figure>
-              <article class="board-list__content">
-                <h3 class="board-list__content-title">${item.title}</h3>
-                ${item.content.length > 0
-                  ? html`
-                      <ul class="board-list__content-items">
-                        ${item.content.map((content) => html`<li>${content}</li>`)}
-                      </ul>
-                    `
-                  : undefined}
-                <footer class="board-list__author">
-                  <span>Added by</span>
-                  <strong>${item.author}</strong>
-                </footer>
-              </article>
-              <aside class="board-list__item-footer">
-                <icon-button icon="addIcon" alt="close" @icon-button-click="${this.handleButtonClick}"></icon-button>
-              </aside>
-            </li>
-          `,
-        )}
-        <li class="board-list__item last"></li>
-      </ul>
+    console.log('>>>>> end', id, items);
+
+    this.initEvent();
+
+    this.shadowRoot.innerHTML = `
+      ${this.styles}
+      ${this.createHTML({ id, items })}
     `;
   }
 }
