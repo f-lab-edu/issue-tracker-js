@@ -1,8 +1,11 @@
 import initializeDragAndDrop from '../../../lib/utils/initializeDragAndDrop';
 import store from '../../../lib/store';
-import { moveBoardItemAction } from '../../../lib/store/reducer/boardReducer';
-import { apiPutMoveBoard } from '../../../lib/api/board';
+import { editBoardItemAction, moveBoardItemAction, removeBoardItemAction } from '../../../lib/store/reducer/boardReducer';
+import { apiDeleteBoardItem, apiPatchBoardItem, apiPutMoveBoard } from '../../../lib/api/board';
+import { attachEvent, closest } from '../../../lib/utils/dom';
 import { forceNextTaskQueue } from '../../../lib/utils/timer';
+import { ALERT, PAGE } from '../../../lib/constant/message';
+import { useConfirm, useTextAreaModal, validateTextInputWithAlert } from '../../../lib/utils/dialog';
 
 class BoardList extends HTMLElement {
   constructor() {
@@ -23,14 +26,23 @@ class BoardList extends HTMLElement {
         width: 100%;
         height: auto;
         min-height: 64px;
-        background-color: #fff;
+        background-color: var(--color-white);
         border-radius: 8px;
-        margin-bottom: 12px;
-        padding: 12px;
+        margin-bottom: var(--spacing-medium);
+        padding: var(--spacing-medium);
         display: flex;
         box-sizing: border-box;
-        border: 1px solid var(--color-border);
+        border: 1px solid var(--border-color);
         cursor: grab;
+      }
+      .board-list__empty {
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+        font-size: 16px;
+        color: var(--color-text);
+        width: 100%;
+        height: 32px;
       }
       .board-list__item.last {
         min-height: 3px;
@@ -55,7 +67,7 @@ class BoardList extends HTMLElement {
         margin: 4px 0 0 0;
         padding: 0;
         font-weight: 400;
-        font-size: 18px;
+        font-size: var(--font-size-large);
         color: var(--color-text);
       }
       .board-list__author {
@@ -122,6 +134,8 @@ class BoardList extends HTMLElement {
         this.render();
       });
     });
+    this.initEvent();
+    this.attchBoardItemDoubleClickEvent();
   }
 
   async moveBoardItemWithAPI(moveElementInfo) {
@@ -143,9 +157,69 @@ class BoardList extends HTMLElement {
     });
   }
 
+  attachRemoveItemEvent() {
+    attachEvent(this.shadowRoot, '.board-list__body', 'click', (e) => {
+      if (e.target.tagName === 'ICON-BUTTON') {
+        const { id: boardId } = e.target.closest('.board-list__body').dataset;
+        const { id: nodeId } = e.target.closest('.board-list__item').dataset;
+        this.handleBoardItemRemove({
+          boardId,
+          nodeId,
+        });
+      }
+    });
+  }
+
+  async handleBoardItemRemove({ boardId, nodeId }) {
+    const confirm = useConfirm({
+      message: ALERT.BOARD_ITEM_REMOVE,
+      closeOnOutsideClick: true,
+    });
+    const isConfirm = await confirm.open();
+    if (isConfirm) {
+      try {
+        await apiDeleteBoardItem({ boardId, nodeId });
+        store.dispatch(removeBoardItemAction({ boardId, nodeId }));
+      } catch (e) {
+        console.error('handleBoardItemRemove error:', e);
+      }
+    }
+  }
+
+  attchBoardItemDoubleClickEvent() {
+    attachEvent(this.shadowRoot, '.board-list__body', 'dblclick', (e) => {
+      const $target = e.target.tagName === 'ARTICLE' ? e.target : closest(e.target, 'article');
+      const { id: boardId } = e.target.closest('.board-list__body').dataset;
+      const { id: nodeId } = closest($target, '[data-id]').dataset;
+      const { title } = this.props.items.find((item) => item.id === nodeId);
+      this.handleBoardItemDoubleClick({
+        boardId,
+        nodeId,
+        title,
+      });
+    });
+  }
+
+  async handleBoardItemDoubleClick({ boardId, nodeId, title = '' }) {
+    const modal = useTextAreaModal({
+      title: PAGE.BOARD_ITEM_MODAL_EDIT_TITLE,
+      value: title,
+      onSubmit: validateTextInputWithAlert.bind(this, ALERT.BOARD_ITEM_EDIT_EMPTY),
+      hideDialogDuringSubmit: true,
+    });
+    const editFormData = await modal.open();
+    try {
+      await apiPatchBoardItem({ boardId, nodeId, title: editFormData.text });
+      store.dispatch(editBoardItemAction({ boardId, nodeId, title: editFormData.text }));
+    } catch (e) {
+      console.error('handleBoardItemDoubleClick error:', e);
+    }
+  }
+
   createHTML({ id, items }) {
     return `
       <ul class="board-list__body" data-id="${id}" data-type="parent">
+        ${items.length === 0 ? `<li class="board-list__empty">${PAGE.BOARD_ITEM_EMPTY}</li>` : ''}
         ${items.reduce(
           (htmlString, item) =>
             `${htmlString}
@@ -161,7 +235,7 @@ class BoardList extends HTMLElement {
                   </footer>
                 </article>
                 <aside class="board-list__item-footer">
-                  <icon-button icon="addIcon" alt="close" @icon-button-click="${this.handleButtonClick}"></icon-button>
+                  <icon-button icon='closeIcon' alt='close'></icon-button>
                 </aside>
               </li>
             `,
@@ -176,6 +250,7 @@ class BoardList extends HTMLElement {
     const { id, items } = this.props;
 
     this.initEvent();
+    this.attachRemoveItemEvent();
 
     this.shadowRoot.innerHTML = `
       ${this.styles}

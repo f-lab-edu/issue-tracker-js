@@ -8,4 +8,5 @@ export const ALERT = {
 
 export const PAGE = {
   BOARD_ITEM_EMPTY: '등록된 이슈가 없습니다.',
+  BOARD_ITEM_MODAL_EDIT_TITLE: '이슈 제목 수정',
 };

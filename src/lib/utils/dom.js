@@ -1,3 +1,5 @@
+import { forceNextTaskQueue } from './timer';
+
 export const getClosestDraggableNode = (el) => closest(el, '[draggable="true"], .last');
 
 export const closest = (el, selector) => {
@@ -32,4 +34,20 @@ export const attachTextInputFocusEvent = ($input) => {
   const { value } = $input;
   $input.value = '';
   $input.value = value;
+};
+
+/**
+ * selector element에 event를 등록합니다.
+ * @param {ShadowRoot} $root
+ * @param {string} selector
+ * @param event
+ * @param {function} handler
+ */
+export const attachEvent = ($root, selector, event, handler) => {
+  forceNextTaskQueue(() => {
+    const element = $root.querySelector(selector);
+    if (element) {
+      element.addEventListener(event, handler.bind(this));
+    }
+  });
 };
