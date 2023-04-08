@@ -1,10 +1,5 @@
-import { css, html, LitElement } from 'lit';
+import { css, html } from 'lit';
 import CoreComponent from '../CoreComponent';
-
-const iconSources = {
-  addIcon: 'https://cdn-icons-png.flaticon.com/512/1828/1828579.png',
-  closeIcon: 'https://cdn-icons-png.flaticon.com/512/2997/2997911.png',
-};
 
 class IconButton extends CoreComponent {
   constructor() {
@@ -14,8 +9,8 @@ class IconButton extends CoreComponent {
   static get styles() {
     return css`
       .icon-button {
-        width: 20px;
-        height: 20px;
+        width: 22px;
+        height: 22px;
         display: flex;
         background-color: transparent;
         border: unset;
@@ -24,13 +19,18 @@ class IconButton extends CoreComponent {
         padding: 0;
         cursor: pointer;
       }
-      .icon-button img {
-        width: 10px;
+      .icon-button svg {
+        width: 12px;
         height: auto;
       }
-
-      .addIcon img {
-        width: 12px;
+      .icon-button:hover svg {
+        fill: var(--color-primary);
+      }
+      .addIcon svg {
+        transform: rotate(45deg);
+      }
+      .addHoverIcon svg {
+        transform: rotate(45deg);
       }
     `;
   }
@@ -39,7 +39,11 @@ class IconButton extends CoreComponent {
     const { icon, alt } = this.props;
     return html`
       <button class="icon-button ${icon}" @click="${this._onClick}">
-        <img src="${iconSources[icon]}" alt="${alt}" />
+        <svg class="icon" height="329pt" viewBox="0 0 329.26933 329" width="329pt" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="m194.800781 164.769531 128.210938-128.214843c8.34375-8.339844 8.34375-21.824219 0-30.164063-8.339844-8.339844-21.824219-8.339844-30.164063 0l-128.214844 128.214844-128.210937-128.214844c-8.34375-8.339844-21.824219-8.339844-30.164063 0-8.34375 8.339844-8.34375 21.824219 0 30.164063l128.210938 128.214843-128.210938 128.214844c-8.34375 8.339844-8.34375 21.824219 0 30.164063 4.15625 4.160156 9.621094 6.25 15.082032 6.25 5.460937 0 10.921875-2.089844 15.082031-6.25l128.210937-128.214844 128.214844 128.214844c4.160156 4.160156 9.621094 6.25 15.082032 6.25 5.460937 0 10.921874-2.089844 15.082031-6.25 8.34375-8.339844 8.34375-21.824219 0-30.164063zm0 0"
+          />
+        </svg>
       </button>
     `;
   }

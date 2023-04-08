@@ -26,3 +26,10 @@ export const getMoveToElementInfo = ($node) => {
   }
   return null;
 };
+
+export const attachTextInputFocusEvent = ($input) => {
+  $input.focus();
+  const { value } = $input;
+  $input.value = '';
+  $input.value = value;
+};

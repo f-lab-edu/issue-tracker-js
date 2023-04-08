@@ -1,6 +1,10 @@
 import { css, html } from 'lit';
 import CoreComponent from '../CoreComponent';
 import store from '../../../lib/store/index';
+import { useTextInputModal, validateTextInputWithAlert } from '../../../lib/utils/dialog';
+import { ALERT } from '../../../lib/constant/message';
+import { apiPostBoardColumn } from '../../../lib/api/board';
+import { addBoardColumnAction } from '../../../lib/store/reducer/boardReducer';
 
 class PageLayout extends CoreComponent {
   constructor() {
@@ -36,12 +40,30 @@ class PageLayout extends CoreComponent {
     });
   }
 
+  async addColumnEvent() {
+    const modal = useTextInputModal({
+      title: '컬럼 추가',
+      value: '',
+      onSubmit: validateTextInputWithAlert.bind(null, ALERT.BOARD_COLUMN_EDIT_EMPTY),
+      hideDialogDuringSubmit: true,
+    });
+    const addColumnFormData = await modal.open();
+    try {
+      const boardColumn = await apiPostBoardColumn({ title: addColumnFormData.text });
+      store.dispatch(addBoardColumnAction(boardColumn));
+    } catch (error) {
+      console.error('addColumnEvent error:', error);
+    }
+  }
+
   render() {
     const { boards } = store.getState();
+    const boardsHTML = boards.map((board) => html` <board-container board="${JSON.stringify(board)}"></board-container>`);
+    const boardColumnAddHTML = boards.length < 5 ? html` <column-add-button @column-add-button-click="${this.addColumnEvent}"></column-add-button>` : '';
     return html`
       <div class="page-layout">
         <page-header></page-header>
-        <main class="page-layout__main">${boards.map((board) => html` <board-container board="${JSON.stringify(board)}"></board-container>`)}</main>
+        <main class="page-layout__main">${boardsHTML} ${boardColumnAddHTML}</main>
         <footer class="page-layout__footer"></footer>
       </div>
     `;
