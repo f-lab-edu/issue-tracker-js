@@ -24,9 +24,20 @@ class PageLayout extends CoreComponent {
     `;
   }
 
+  static properties = {
+    boards: { type: Array },
+  };
+
+  connectedCallback() {
+    super.connectedCallback();
+    store.subscribe(() => {
+      this.boards = store.getState().boards;
+      this.requestUpdate();
+    });
+  }
+
   render() {
     const { boards } = store.getState();
-    console.log('init board', boards);
     return html`
       <div class="page-layout">
         <page-header></page-header>

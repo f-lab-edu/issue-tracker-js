@@ -1,17 +1,10 @@
 import { LitElement } from 'lit';
-import store from '../../lib/store';
 
 class CoreComponent extends LitElement {
   constructor(attributes = []) {
     super();
-    this.store = store;
     this.props = {};
     this.attrs = attributes;
-
-    this.store.subscribe(() => {
-      this.updateState();
-      this.requestUpdate();
-    });
   }
 
   connectedCallback() {
@@ -29,8 +22,6 @@ class CoreComponent extends LitElement {
     }
     return super.shouldUpdate(_changedProperties);
   }
-
-  updateState() {}
 }
 
 export default CoreComponent;
