@@ -56,4 +56,50 @@ export const mockDeleteBoardColumn = () =>
     },
   });
 
-export default [mockGetBoards, mockPostBoard, mockPutMoveBoard, mockDeleteBoardColumn];
+export const mockDeleteBoardItem = () =>
+  mockServer({
+    method: 'DELETE',
+    path: '/api/board/:boardId/:nodeId',
+    statusCode: 200,
+    responseCallback: ({ params }) => {
+      const { boardId, nodeId } = params;
+      mockData.removeBoardItemById({ boardId, nodeId });
+    },
+  });
+
+export const mockPatchBoardItem = () =>
+  mockServer({
+    method: 'PATCH',
+    path: '/api/board/:boardId/:nodeId',
+    statusCode: 200,
+    responseCallback: ({ params, data }) => {
+      const { boardId, nodeId } = params;
+      const { title } = data;
+      mockData.updateBoardItemById({ boardId, nodeId, title });
+      return mockData.getBoardItemById({ boardId, nodeId });
+    },
+  });
+
+export const mockPatchBoardColumn = () =>
+  mockServer({
+    method: 'PATCH',
+    path: '/api/board/:boardId',
+    statusCode: 200,
+    responseCallback: ({ params, data }) => {
+      mockData.updateBoardColumnById({ boardId: params.boardId, title: data.title });
+      return mockData.getBoardById(params.boardId).title;
+    },
+  });
+
+export const mockPostBoardColumn = () =>
+  mockServer({
+    method: 'POST',
+    path: '/api/boards',
+    statusCode: 200,
+    responseCallback: ({ data }) => {
+      const { title } = data;
+      return mockData.addBoardColumn(title);
+    },
+  });
+
+export default [mockGetBoards, mockPostBoard, mockPutMoveBoard, mockDeleteBoardColumn, mockDeleteBoardItem, mockPatchBoardItem, mockPatchBoardColumn, mockPostBoardColumn];

@@ -14,3 +14,22 @@ export const insertBoardItem = (boards, parentId, item, targetIndex) =>
     }
     return board;
   });
+
+export const updateBoardItemTitleById = (boards, boardId, nodeId, title) => {
+  const boardIndex = boards.findIndex((data) => data.id === boardId);
+  if (boardIndex !== -1) {
+    const boardItemIndex = boards[boardIndex].items.findIndex((item) => item.id === nodeId);
+    if (boardItemIndex !== -1) {
+      boards[boardIndex].items[boardItemIndex].title = title;
+    }
+  }
+  return boards;
+};
+
+export const updateBoardColumnTitleById = (boards, boardId, title) => {
+  const boardIndex = boards.findIndex((data) => data.id === boardId);
+  if (boardIndex !== -1) {
+    boards[boardIndex].title = title;
+  }
+  return boards;
+};

@@ -1,13 +1,22 @@
 import { uuidv4 } from '../utils/string';
-import { insertBoardItem, removeBoardItem } from '../utils/board';
+import { insertBoardItem, removeBoardItem, updateBoardColumnTitleById, updateBoardItemTitleById } from '../utils/board';
 
 const getTemplateBoardColumn = (title = '') => ({
   id: uuidv4(),
   title,
   isTextareaOpen: false,
+  items: [],
+});
+
+const getTemplateBoardColumnWithItems = (title = '') => ({
+  id: uuidv4(),
+  title,
+  isTextareaOpen: false,
   items: [
-    { id: uuidv4(), title: `제목 ${title} - 0`, content: [], author: 'bytrustu' },
-    { id: uuidv4(), title: `제목 ${title} - 1`, content: [], author: 'bytrustu' },
+    { id: uuidv4(), title: `${title} - 1`, content: [], author: 'bytrustu' },
+    { id: uuidv4(), title: `${title} - 2`, content: [], author: 'bytrustu' },
+    { id: uuidv4(), title: `${title} - 3`, content: [], author: 'bytrustu' },
+    { id: uuidv4(), title: `${title} - 4`, content: [], author: 'bytrustu' },
   ],
 });
 
@@ -20,7 +29,7 @@ const getTemplateBoardItem = (title = '') => ({
 
 class MockData {
   constructor() {
-    this.boards = [getTemplateBoardColumn('할 일'), getTemplateBoardColumn('진행 중'), getTemplateBoardColumn('완료')];
+    this.boards = [getTemplateBoardColumnWithItems('할 일'), getTemplateBoardColumnWithItems('진행 중'), getTemplateBoardColumnWithItems('완료')];
   }
 
   getBoards() {
@@ -29,6 +38,11 @@ class MockData {
 
   getBoardById(id) {
     return this.boards.find((data) => data.id === id);
+  }
+
+  getBoardItemById({ boardId, nodeId }) {
+    const board = this.getBoardById(boardId);
+    return board.items.find((item) => item.id === nodeId);
   }
 
   getBoardLastItemById(id) {
@@ -52,6 +66,27 @@ class MockData {
 
   removeBoardColumnById(id) {
     this.boards = this.boards.filter((data) => data.id !== id);
+  }
+
+  removeBoardItemById({ boardId, nodeId }) {
+    const boardIndex = this.boards.findIndex((data) => data.id === boardId);
+    if (boardIndex !== -1) {
+      this.boards[boardIndex].items = this.boards[boardIndex].items.filter((item) => item.id !== nodeId);
+    }
+  }
+
+  updateBoardItemById({ boardId, nodeId, title }) {
+    this.boards = updateBoardItemTitleById(this.boards, boardId, nodeId, title);
+  }
+
+  updateBoardColumnById({ boardId, title }) {
+    this.boards = updateBoardColumnTitleById(this.boards, boardId, title);
+  }
+
+  addBoardColumn(title) {
+    const board = getTemplateBoardColumn(title);
+    this.boards.push(board);
+    return board;
   }
 }
 
