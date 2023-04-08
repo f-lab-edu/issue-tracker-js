@@ -4,8 +4,19 @@
   --font-size-default: 14px;
   --font-weight-medium: 500;
   --font-weight-bold: 600;
-  --color-primary: #ee8548;
+  --color-primary: #fd6e1d;
   --color-secondary: #4e8ef1;
+  --color-error: #f44336;
+  --color-success: #4caf50;
+  --color-warning: #ff9800;
+  --color-white: #fff;
   --color-text: #666;
   --color-text-light: #888;
+  --color-background-dark: #f5f5f5;
+  --color-border: #d3d3d3;
+  --font-size-small: 12px;
+  --font-size-large: 18px;
+  --spacing-small: 6px;
+  --spacing-medium: 12px;
+  --spacing-large: 24px;
 }
