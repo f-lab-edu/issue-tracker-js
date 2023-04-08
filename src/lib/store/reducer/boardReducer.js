@@ -138,7 +138,7 @@ const boardReducer = (state, action) => {
           if (board.id === action.payload) {
             return {
               ...board,
-              isTextareaOpen: true,
+              isTextareaOpen: !board.isTextareaOpen,
             };
           }
           return board;
