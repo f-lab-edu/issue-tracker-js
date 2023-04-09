@@ -6,6 +6,7 @@ import { apiDeleteBoardColumn, apiPatchBoardColumn, apiPostBoard } from '../../.
 import { ALERT, PAGE } from '../../../lib/constant/message';
 import { useAlert, useConfirm, useTextInputModal, validateTextInputWithAlert } from '../../../lib/utils/dialog';
 import { attachEvent } from '../../../lib/utils/dom';
+import { INPUT_TEXT } from '../../../lib/constant/dom';
 
 class BoardContainer extends CoreComponent {
   constructor() {
@@ -80,7 +81,9 @@ class BoardContainer extends CoreComponent {
       }
       .board-container__input-text {
         width: 100%;
+        min-height: 64px;
         height: 64px;
+        max-height: var(--max-height-textarea);
         border-radius: var(--border-radius);
         border: 1px solid var(--color-border);
         padding: var(--spacing-medium);
@@ -223,7 +226,7 @@ class BoardContainer extends CoreComponent {
         ${board.isTextareaOpen
           ? html`
               <div class="board-container__input-container">
-                <textarea class="board-container__input-text" maxlength="500" placeholder="Enter a note"></textarea>
+                <textarea class="board-container__input-text" maxlength="${INPUT_TEXT.BOARD_ITEM_TITLE_LENGTH}" placeholder="Enter a note"></textarea>
                 <div class="board-container__button-group">
                   <button class="board-container__button board-container__button-cancel" @click="${() => this.handleTextareaClose(board.id)}">취소</button>
                   <button class="board-container__button board-container__button-add" @click="${() => this.handleBoardItemAdd(board.id)}">추가</button>

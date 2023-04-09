@@ -1,0 +1,3 @@
+export const INPUT_TEXT = {
+  BOARD_ITEM_TITLE_LENGTH: 500,
+};

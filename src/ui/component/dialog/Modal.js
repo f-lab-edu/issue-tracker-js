@@ -1,5 +1,6 @@
 import Dialog from './Dialog';
 import { attachTextInputFocusEvent } from '../../../lib/utils/dom';
+import { INPUT_TEXT } from '../../../lib/constant/dom';
 
 class Modal extends Dialog {
   constructor({ type, title, closeOnOutsideClick, onSubmit, hideDialogDuringSubmit, value }) {
@@ -63,7 +64,7 @@ class Modal extends Dialog {
         .modal__content textarea {
           width: 100%;
           height: 38px;
-          max-height: 260px;
+          max-height: var(--max-height-textarea);
           padding: 10px;
           min-height: 100px;
           border: 1px solid var(--border-color);    
@@ -126,7 +127,7 @@ class Modal extends Dialog {
         <div class='modal__body'>
           <div class='modal__content'>
             ${this.type === 'input' ? `<input type='text' name='text' value='${this.value}' maxlength='50' />` : ''}
-            ${this.type === 'textarea' ? `<textarea name='text' maxlength='500'>${this.value}</textarea>` : ''}
+            ${this.type === 'textarea' ? `<textarea name='text' maxlength='${INPUT_TEXT.BOARD_ITEM_TITLE_LENGTH}'>${this.value}</textarea>` : ''}
           </div>
           <div class='modal__action'>
             <button type='button' class='modal__button modal__button-cancel'>취소</button>
