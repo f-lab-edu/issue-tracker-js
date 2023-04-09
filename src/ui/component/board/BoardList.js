@@ -12,7 +12,6 @@ class BoardList extends HTMLElement {
     super();
     this.props = {};
     this.attachShadow({ mode: 'open' });
-    this.props.initReder = false;
   }
 
   get styles() {
@@ -152,7 +151,6 @@ class BoardList extends HTMLElement {
       const $list = this.shadowRoot.querySelector('.board-list__body');
       if ($list) {
         initializeDragAndDrop($list, this.moveBoardItemWithAPI);
-        this.props.initReder = true;
       }
     });
   }
